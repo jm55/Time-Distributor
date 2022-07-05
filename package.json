@@ -1,0 +1,19 @@
+{
+  "name": "timedistributor",
+  "version": "1.0.0",
+  "description": "Time calculation for time distributing.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jm55DLSU/TimeDistributor.git"
+  },
+  "author": "Escalona, J.M.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jm55DLSU/TimeDistributor/issues"
+  },
+  "homepage": "https://github.com/jm55DLSU/TimeDistributor#readme"
+}
