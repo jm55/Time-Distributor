@@ -18,7 +18,11 @@ public class FileHandler {
 			if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				File f = jfc.getSelectedFile();
 				String extension = f.getName();
-				extension = extension.substring(extension.lastIndexOf('.'));
+				
+				if(extension.contains("."))
+					extension = extension.substring(extension.lastIndexOf('.'));
+				else
+					extension = "";
 				
 				if(!extension.equalsIgnoreCase(".csv"))
 					JOptionPane.showMessageDialog(null, "File selected not allowed, please select .csv files containing names only.");
@@ -38,9 +42,9 @@ public class FileHandler {
 					}
 				}
 			}else
-				return new String[0];
+				return null;
 		}
-		return new String[0];
+		return null;
 	}
 	
 	public void writeFile(String[][] input) {
@@ -49,9 +53,8 @@ public class FileHandler {
 			File f = jfc.getSelectedFile();
 			String filename = f.getName();
 			
-			if(!filename.substring(filename.lastIndexOf(".")).equalsIgnoreCase(".csv")) {
-				f = new File(f.getAbsolutePath() + ".csv");
-			}
+			f = new File(f.getAbsolutePath() + ".csv");
+			
 			System.out.println("Saving as: " + f.getAbsolutePath());
 			
 			try {
@@ -59,7 +62,7 @@ public class FileHandler {
 					f.createNewFile();
 				FileWriter fwriter = new FileWriter(f.getAbsolutePath());
 				for(String[] i: input)
-					fwriter.write(i[0] + ", " + i[1] + ","  + i[2] + "\n");
+					fwriter.write(i[0] + ", " + i[1] + ","  + i[2] + ","  + i[3] + "\n");
 				fwriter.close();
 				
 				JOptionPane.showMessageDialog(null, "Please do view/open the newly save file in MS Excel and save as a spreadsheet when needed.");

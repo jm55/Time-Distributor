@@ -14,10 +14,11 @@ public class Compute {
 		
 		int start = 0, end = duration;
 		for(int i = 0; i < name.length; i++) {
-			out[i] = new String[3];
-			out[i][0] = name[i];
-			out[i][1] = secondsToString(start); //Start time
-			out[i][2] = secondsToString(end); //End time
+			out[i] = new String[4];
+			out[i][0] = (i+1) + "";
+			out[i][1] = name[i];
+			out[i][2] = secondsToString(start); //Start time
+			out[i][3] = secondsToString(end); //End time
 			
 			start = end;
 			end += duration;
