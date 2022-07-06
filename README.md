@@ -15,3 +15,6 @@ The image shown in 1 shows the following inputs:
 ![Expected Output](.others/names.jpg)
 2. Actual Output
 ![Actual Output](.others/sample_out.png)
+
+## Project Client:
+The project was commissioned by a student from [DLSU-HSI](https://www.dlshsi.edu.ph/) for the student organization's use.
