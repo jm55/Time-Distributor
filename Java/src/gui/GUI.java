@@ -2,11 +2,15 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.BorderFactory;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
+import compute.Compute;
 import mains.Controller;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 /**
  * GUI for the program.
@@ -16,18 +20,19 @@ import java.awt.event.*;
 public class GUI extends JFrame{
 	//PRIVATE GLOBAL VALUES
 	private boolean debug = false;
-	private final int WIDTH = 1024, HEIGHT = 620;
+	private final int WIDTH = 1024, HEIGHT = 720;
 	private final int BTNWIDTH = 256, BTNHEIGHT = 50;
 	private final String WindowTitle = "TimeDistributor";
-	private final String typeFace = "Arial", consoleFace = "Consolas";
+	private final String typeFace = "Arial";
 	private ActionListener listener;
-	private JLabel titleLabel, serverIPLabel, serverPortLabel, consoleLabel, localSelectedFileLabel, remoteSelectedFileLabel, blockSizeLabel;
-	private JTextField serverIPField, serverPortField, localSelectedFileField, remoteSelectedFileField ;
-	private JTextArea outputArea;
-	private JScrollPane outputScroll;
+	private String[] columns = {"#", "Name", "Start", "End", "Duration (sec)"};
+	private JLabel titleLabel, hrLabel, minLabel, secLabel, totalTimeLabel, durationTimeLabel, colon0, inputColon, selectedFileLabel, recommendedCountLabel;
+	private JTextField hrTotal, minTotal, secTotal, hrDur, minDur, secDur, selectedFile, recommendedCount;
 	//private JCheckBox P2PCheckBox;
-	private JButton pingBtn, openFileBtn, sendFileBtn, recvFileBtn, resetBtn, aboutBtn, exitBtn, dataPortBtn;
-	private JComboBox blockSizes;
+	private JButton openFile, saveFile, compute, about, reset;
+	private JTable raw_table;
+	private JScrollPane table;
+	private DefaultTableModel tableModel;
 	
 	/**
 	 * Default constructor that builds the window.
@@ -100,19 +105,15 @@ public class GUI extends JFrame{
 	 * Clears input and output components of the window
 	 */
 	public void clearIO() {
-		localSelectedFileField.setText("No File Selected");
-		remoteSelectedFileField.setText("");
-		serverIPField.setText("");
-		serverPortField.setText("");
-		blockSizes.setSelectedIndex(0);
-	}
-	
-	/**
-	 * Gets contents of outputArea.
-	 * @return Contents of outputArea
-	 */
-	public String getOutputText() {
-		return outputArea.getText();
+		hrTotal.setText("00");
+		minTotal.setText("00");
+		secTotal.setText("00");
+		hrDur.setText("00");
+		minDur.setText("00");
+		secDur.setText("00");
+		tableModel.setRowCount(0);
+		selectedFile.setText("Path to selected names file.");
+		recommendedCount.setText("");
 	}
 	
 	/**
@@ -133,6 +134,87 @@ public class GUI extends JFrame{
 		return isVisible();
 	}
 	
+	public int[] getTotalTimeStr() {
+		int[] times = {0,0,0};
+		try {
+			if(hrTotal.getText().length() != 0)
+				times[0] = Integer.parseInt(hrTotal.getText());
+			if(minTotal.getText().length() != 0)
+				times[1] = Integer.parseInt(minTotal.getText());
+			if(secTotal.getText().length() != 0)
+				times[2] = Integer.parseInt(secTotal.getText());
+		}catch(NumberFormatException e) {
+			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return times;
+	}
+	
+	public int getTotalTime() {
+		int hr = 0, min = 0, sec = 0;
+		try {
+			if(hrTotal.getText().length() != 0)
+				hr = Integer.parseInt(hrTotal.getText());
+			if(minTotal.getText().length() != 0)
+				min = Integer.parseInt(minTotal.getText());
+			if(secTotal.getText().length() != 0)
+				sec = Integer.parseInt(secTotal.getText());
+		}catch(NumberFormatException e) {
+			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return new Compute().timeToSeconds(hr, min, sec);
+	}
+	
+	public int[] getDurTimeStr() {
+		int[] times = {0,0,0};
+		try {
+			if(hrDur.getText().length() != 0)
+				times[0] = Integer.parseInt(hrDur.getText());
+			if(minDur.getText().length() != 0)
+				times[1] = Integer.parseInt(minDur.getText());
+			if(secDur.getText().length() != 0)
+				times[2] = Integer.parseInt(secDur.getText());
+		}catch(NumberFormatException e) {
+			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return times;
+	}
+	
+	public int getDurTime() {
+		int hr = 0, min = 0, sec = 0;
+		try {
+			if(hrDur.getText().length() != 0)
+				hr = Integer.parseInt(hrDur.getText());
+			if(minDur.getText().length() != 0)
+				min = Integer.parseInt(minDur.getText());
+			if(secDur.getText().length() != 0)
+				sec = Integer.parseInt(secDur.getText());
+		}catch(NumberFormatException e) {
+			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return new Compute().timeToSeconds(hr, min, sec);
+	}
+	
+	public void setSelectedFile(String f) {
+		selectedFile.setText(f);
+	}
+	
+	public void addMultipleRows(String[][] row) {
+		for(String[] r: row)
+			addRow(r);
+	}
+	
+	public void addRow(Object[] row) {
+		tableModel.addRow(row);
+	}
+	
+	public void setRecommendedCount(int count) {
+		recommendedCount.setText(count + "");
+	}
+	
+	public void resetTable() {
+		tableModel.setRowCount(0);
+	}
+	
 	/***
 	 * =============================================
 		 * PRIVATE METHODS
@@ -145,15 +227,82 @@ public class GUI extends JFrame{
 		panel.setLayout(null);
 		
 		//LABELS
-//		titleLabel = createLabel(WindowTitle, newFont(Font.BOLD, 24), WIDTH/2-200,24,400,32, SwingConstants.CENTER, SwingConstants.TOP);
-//		panel.add(titleLabel);
+		//Title Label
+		titleLabel = createLabel(WindowTitle, newFont(Font.BOLD, 24), WIDTH/2-200,24,400,32, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(titleLabel);
+		//Total Time Label
+		hrLabel = createLabel("hh", newFont(Font.BOLD, 16), WIDTH/2-100,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(hrLabel);
+		minLabel = createLabel("mm", newFont(Font.BOLD, 16), WIDTH/2,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(minLabel);
+		secLabel = createLabel("ss", newFont(Font.BOLD, 16), WIDTH/2+100,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(secLabel);
+		colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(colon0);
+		colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(colon0);
+		totalTimeLabel = createLabel("Total Time: ", newFont(Font.BOLD, 16), WIDTH/2-400,104,400,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(totalTimeLabel);
+		durationTimeLabel = createLabel("Duration Time: ", newFont(Font.BOLD, 16), WIDTH/2-414,136,400,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(durationTimeLabel);
+		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(inputColon);
+		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(inputColon);
+		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(inputColon);
+		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(inputColon);
+		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(inputColon);
+		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(inputColon);
+		//Selected File
+		selectedFileLabel = createLabel("Selected File: ", newFont(Font.BOLD, 16), WIDTH/2-550,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(selectedFileLabel);
+		recommendedCountLabel = createLabel("Recommended Count: ", newFont(Font.BOLD, 16), WIDTH/2,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(recommendedCountLabel);
 		
 		//INPUT/OUTPUT FIELDS/AREAS
-//		serverIPField = createTextField(newFont(Font.PLAIN, 16),32,(64*1)+32,256,32);
-//		panel.add(serverIPField);
+		//Total Time
+		hrTotal = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,100,88,24);
+		panel.add(hrTotal);
+		minTotal = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,100,88,24);
+		panel.add(minTotal);
+		secTotal = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,100,88,24);
+		panel.add(secTotal);
+		//Duration Time
+		hrDur = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,132,88,24);
+		panel.add(hrDur);
+		minDur = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,132,88,24);
+		panel.add(minDur);
+		secDur = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,132,88,24);
+		panel.add(secDur);
+		//Selected File
+		selectedFile = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-290,238,300,24);
+		selectedFile.setEditable(false);
+		panel.add(selectedFile);
+		recommendedCount = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+290,238,110,24);
+		recommendedCount.setEditable(false);
+		panel.add(recommendedCount);
 		
-//		dataPortBtn = createButton("Set Data Port", newFont(Font.BOLD,16),32,(72*4), this.BTNWIDTH, this.BTNHEIGHT, listener, "SetDataPort");
-//		panel.add(dataPortBtn);
+		//BUTTON
+		openFile = createButton("Open Names File", newFont(Font.BOLD,16),WIDTH/2-(800/2),172, this.BTNWIDTH, this.BTNHEIGHT, listener, "OpenFile");
+		panel.add(openFile);
+		compute = createButton("Compute", newFont(Font.BOLD,16),WIDTH/2-(this.BTNWIDTH/2),172, this.BTNWIDTH, this.BTNHEIGHT, listener, "Compute");
+		panel.add(compute);
+		saveFile = createButton("Save Output", newFont(Font.BOLD,16),WIDTH/2+(this.BTNWIDTH/2)+16,172, this.BTNWIDTH, this.BTNHEIGHT, listener, "SaveFile");
+		panel.add(saveFile);
+		about = createButton("About",newFont(Font.BOLD,16),WIDTH/2+(this.BTNWIDTH/2)+16,600,this.BTNWIDTH,this.BTNHEIGHT,listener,"About");
+		panel.add(about);
+		reset = createButton("Reset",newFont(Font.BOLD,16),WIDTH/2-(this.BTNWIDTH/2),600,this.BTNWIDTH,this.BTNHEIGHT,listener,"Reset");
+		panel.add(reset);
+		
+		tableModel = new DefaultTableModel(columns,0);
+		raw_table = createTable(newFont(Font.PLAIN, 12), WIDTH/2-(800/2),280,800,300, tableModel);
+		raw_table.setModel(tableModel);
+		table = createScrollPane(raw_table); 
+		panel.add(table);
 		
 		add(panel);
 		revalidate();
@@ -299,6 +448,19 @@ public class GUI extends JFrame{
 		scroll.setBounds(ta.getX(), ta.getY(), ta.getWidth(), ta.getHeight());
 		return scroll;
 	}
+
+	/**
+	 * Builds a JScrollPane object given a JTable area object.
+	 * @param ta JTable to add a JScrollPane for.
+	 * @return JScrollPane for the given JTable.
+	 */
+	private JScrollPane createScrollPane(JTable ta) {
+		JScrollPane scroll = new JScrollPane(ta);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setBounds(ta.getX(), ta.getY(), ta.getWidth(), ta.getHeight());
+		return scroll;
+	}
 	
 	/**
 	 * Builds a JComboBox object given the specifications.
@@ -321,8 +483,14 @@ public class GUI extends JFrame{
 		combo.setActionCommand(actionCommand);
 		return combo;
 	}
-	
-	
+
+	private JTable createTable(Font f, int x, int y, int width, int height, DefaultTableModel model) {
+		JTable t = new JTable(model);
+		t.setBounds(x,y,width,height);
+		t.setFont(f);
+		return t;
+	}
+		
 	/**
 	 * Warns if the GUI is in test mode.
 	 */
