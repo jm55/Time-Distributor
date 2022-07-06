@@ -23,7 +23,7 @@ public class Controller implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(e.getActionCommand());
-		
+		boolean initial = true;
 		if(e.getActionCommand().equalsIgnoreCase("SaveFile")) {
 			fh.writeFile(output);
 		}else if(e.getActionCommand().equalsIgnoreCase("Compute")) {
@@ -31,6 +31,7 @@ public class Controller implements ActionListener{
 		}else if(e.getActionCommand().equalsIgnoreCase("OpenFile")) {
 			data = fh.readFile();
 			if(data != null){
+				gui.resetTable();
 				if(data[1].length > 0) {
 					gui.setSelectedFile(data[0][0]);
 					output = new String[data[1].length][];
@@ -46,7 +47,9 @@ public class Controller implements ActionListener{
 					}
 					gui.addMultipleRows(output);
 				}
-				compute();
+				if(!initial)
+					compute();
+				initial = false;
 			}else {
 				gui.setSelectedFile("Path to selected file.");
 			}
@@ -55,6 +58,17 @@ public class Controller implements ActionListener{
 			gui.clearIO();
 		}else if(e.getActionCommand().equalsIgnoreCase("About")) {
 			gui.popDialog("Time Distributor\n©2022 Escalona, J.M.\nCCS - DLSU Manila", "About", JOptionPane.QUESTION_MESSAGE);
+		}else if(e.getActionCommand().equalsIgnoreCase("RecDuration")){
+			try {
+				String total_time = gui.inputDialog("Enter total time (hh:mm:ss): ");
+				String persons = gui.inputDialog("Enter number of persons to divide the time from: ");
+				int[] times = c.splitTimeString(total_time);
+				int total_sec = c.timeToSeconds(times[0], times[1], times[2]);
+				String split_time = c.secondsToString(c.count(Integer.parseInt(persons), total_sec));
+				gui.popDialog("Recommended time for each (hh:mm:ss): " + split_time, "Recommended Duration Time", JOptionPane.PLAIN_MESSAGE);
+			}catch(NumberFormatException nf) {
+				gui.popDialog("Error parsing integer, please ensure that inputs are numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}else {
 			gui.popDialog("Invalid command received.", "Error", JOptionPane.ERROR_MESSAGE);
 		}

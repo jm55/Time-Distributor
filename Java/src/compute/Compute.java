@@ -61,4 +61,12 @@ public class Compute {
 		
 		return out;
 	}
+	
+	public int[] splitTimeString(String raw_duration) {
+		int[] d = new int[3];
+		d[0] = Integer.parseInt(raw_duration.substring(0,2));
+		d[1] = Integer.parseInt(raw_duration.substring(3,5));
+		d[2] = Integer.parseInt(raw_duration.substring(6,8));
+		return d;
+	}
 }

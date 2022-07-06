@@ -29,7 +29,7 @@ public class GUI extends JFrame{
 	private JLabel titleLabel, hrLabel, minLabel, secLabel, totalTimeLabel, durationTimeLabel, colon0, inputColon, selectedFileLabel, recommendedCountLabel;
 	private JTextField hrTotal, minTotal, secTotal, hrDur, minDur, secDur, selectedFile, recommendedCount;
 	//private JCheckBox P2PCheckBox;
-	private JButton openFile, saveFile, compute, about, reset;
+	private JButton openFile, saveFile, compute, about, reset, recommendedDuration;
 	private JTable raw_table;
 	private JScrollPane table;
 	private DefaultTableModel tableModel;
@@ -297,6 +297,8 @@ public class GUI extends JFrame{
 		panel.add(about);
 		reset = createButton("Reset",newFont(Font.BOLD,16),WIDTH/2-(this.BTNWIDTH/2),600,this.BTNWIDTH,this.BTNHEIGHT,listener,"Reset");
 		panel.add(reset);
+		recommendedDuration = createButton("Find Recommended Duration",newFont(Font.BOLD,14),WIDTH/2-(800/2),600,this.BTNWIDTH,this.BTNHEIGHT,listener,"RecDuration");
+		panel.add(recommendedDuration);
 		
 		tableModel = new DefaultTableModel(columns,0);
 		raw_table = createTable(newFont(Font.PLAIN, 12), WIDTH/2-(800/2),280,800,300, tableModel);
