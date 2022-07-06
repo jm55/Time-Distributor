@@ -39,9 +39,9 @@ public class Controller implements ActionListener{
 						output[i] = new String[5];
 						output[i][0] = i + 1 + "";
 						output[i][1] = data[1][ctr-1];
-						output[i][2] = "";
-						output[i][3] = "";
-						output[i][4] = "";
+						output[i][2] = "00:00:00";
+						output[i][3] = "00:00:00";
+						output[i][4] = "0";
 						ctr++;
 					}
 					gui.addMultipleRows(output);

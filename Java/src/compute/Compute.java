@@ -37,7 +37,28 @@ public class Compute {
 		seconds -= (min*60);
 		int sec = seconds;
 		
-		String out = hr + ":" + min + ":" + sec;
+		String out = "";
+		
+		//HR
+		if(hr < 10)
+			out += "0" + hr;
+		else
+			out += hr + "";
+		out += ":";
+		
+		//MIN
+		if(min < 10)
+			out += "0" + min;
+		else
+			out += min + "";
+		out += ":";
+		
+		//SEC
+		if(sec < 10)
+			out += "0" + sec;
+		else
+			out += sec;
+		
 		return out;
 	}
 }
