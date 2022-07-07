@@ -93,6 +93,7 @@ public class Controller implements ActionListener{
 				gui.setRecommendedCount("N/A");
 				gui.resetTable();
 				gui.addMultipleRows(output);
+				gui.popDialog("Time duration between end and start time (hh:mm:ss): " + c.secondsToString(duration), "Time Duration between Start-End", JOptionPane.INFORMATION_MESSAGE);
 			}else {
 				int[] total = gui.getATimeStr(), dur = gui.getBTimeStr();
 				output = c.findDuration(data[1], dur, total, gui.getBTime());
