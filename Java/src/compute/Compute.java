@@ -1,3 +1,8 @@
+/**
+ * @author Escalona, J.M.
+ */
+
+
 package compute;
 
 public class Compute {
@@ -25,6 +30,29 @@ public class Compute {
 			out[i][4] = (end-start) + "";
 			start = end;
 			end += duration;
+		}
+		
+		return out;
+	}
+	
+	public String[][] findDurationStartEnd(String[] name, int[] start, int[] end, int duration, int durationEach){
+		String[][] out = new String[name.length][];
+		
+		int startSec = timeToSeconds(start[0], start[1], start[2]);
+		int endSec = timeToSeconds(end[0],end[1],end[2]);
+		
+		int clamp0 = startSec, clamp1 = startSec+durationEach;
+		for(int i = 0; i < name.length; i++) {
+			out[i] = new String[5];
+			out[i][0] = (i+1) + "";
+			out[i][1] = name[i];
+			out[i][2] = secondsToString(clamp0); //Start time
+			if(i == name.length-1)
+				clamp1 = endSec;
+			out[i][3] = secondsToString(clamp1); //End time
+			out[i][4] = (clamp1-clamp0) + "";
+			clamp0 = clamp1;
+			clamp1 += durationEach;
 		}
 		
 		return out;
@@ -68,5 +96,27 @@ public class Compute {
 		d[1] = Integer.parseInt(raw_duration.substring(3,5));
 		d[2] = Integer.parseInt(raw_duration.substring(6,8));
 		return d;
+	}
+	
+	public String[][] redistribute(String[][] input){
+		int max = Integer.parseInt(input[input.length-1][4]), subsequent = Integer.parseInt(input[input.length-2][4]);
+		int excess = max - subsequent;
+		if(excess > 10) {
+			int ctr = input.length-2;
+			while(excess > 0) {
+				
+				int n = 0;
+				if(excess >= 10)
+					n = Integer.parseInt(input[ctr][4]) + 10;
+				else
+					n = Integer.parseInt(input[ctr][4] + excess);
+				input[ctr][4] = n + "";
+				excess -= 10;
+				ctr--;
+				if(ctr < 0)
+					ctr = input.length-2;
+			}
+		}
+		return input;
 	}
 }

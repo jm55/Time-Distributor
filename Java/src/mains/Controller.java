@@ -1,3 +1,8 @@
+/**
+ * @author Escalona, J.M.
+ */
+
+
 package mains;
 
 import java.awt.event.ActionEvent;
@@ -22,7 +27,7 @@ public class Controller implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
+		//System.out.println(e.getActionCommand());
 		boolean initial = true;
 		if(e.getActionCommand().equalsIgnoreCase("SaveFile")) {
 			fh.writeFile(output);
@@ -57,7 +62,7 @@ public class Controller implements ActionListener{
 			System.gc();
 			gui.clearIO();
 		}else if(e.getActionCommand().equalsIgnoreCase("About")) {
-			gui.popDialog("Time Distributor\n©2022 Escalona, J.M.\nCCS - DLSU Manila", "About", JOptionPane.QUESTION_MESSAGE);
+			gui.popDialog("Time Distributor\n©2022 Escalona, J.M.\nCollege of Computer Science - DLSU Manila\n🇵🇭", "About", JOptionPane.QUESTION_MESSAGE);
 		}else if(e.getActionCommand().equalsIgnoreCase("RecDuration")){
 			try {
 				String total_time = gui.inputDialog("Enter total time (hh:mm:ss): ");
@@ -69,6 +74,9 @@ public class Controller implements ActionListener{
 			}catch(NumberFormatException nf) {
 				gui.popDialog("Error parsing integer, please ensure that inputs are numbers.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
+		}else if(e.getActionCommand().equalsIgnoreCase("StartEndMode")){
+			gui.swapMode(gui.isStartEndMode());
+			gui.popDialog("Start-End Time Mode enabled.", "Start-End Mode", JOptionPane.INFORMATION_MESSAGE);
 		}else {
 			gui.popDialog("Invalid command received.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -76,25 +84,50 @@ public class Controller implements ActionListener{
 	
 	public void compute() {
 		if(validTimes()) {
-			int[] total = gui.getTotalTimeStr(), dur = gui.getDurTimeStr();
-			output = c.findDuration(data[1], dur, total, gui.getDurTime());
-			gui.setRecommendedCount(c.count(gui.getDurTime(), gui.getTotalTime()));
-			gui.resetTable();
-			gui.addMultipleRows(output);
+			if(gui.isStartEndMode()) {
+				int[] start = gui.getATimeStr(), end = gui.getBTimeStr();
+				int duration = c.timeToSeconds(end[0], end[1], end[2]) - c.timeToSeconds(start[0], start[1], start[2]);
+				int durationEach = c.count(data[1].length, duration);
+				output = c.findDurationStartEnd(data[1], start, end, duration, durationEach);
+				output = c.redistribute(output);
+				gui.setRecommendedCount("N/A");
+				gui.resetTable();
+				gui.addMultipleRows(output);
+			}else {
+				int[] total = gui.getATimeStr(), dur = gui.getBTimeStr();
+				output = c.findDuration(data[1], dur, total, gui.getBTime());
+				output = c.redistribute(output);
+				gui.setRecommendedCount(c.count(gui.getBTime(), gui.getATime()) + "");
+				gui.resetTable();
+				gui.addMultipleRows(output);
+			}
+			
 		}else {
-			gui.popDialog("Invalid time configuration. Duration time must be less than the total time.", "Time Error", JOptionPane.WARNING_MESSAGE);
+			gui.popDialog("Invalid time configuration. Please check that time configurations are valid.\nTotal time must be greater than duration.\nEnd time must be greater than start time.", "Time Error", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 	
 	public boolean validTimes() {
 		boolean state = true;
-		int total = gui.getTotalTime(), dur = gui.getDurTime();
 		
-		if(total < dur)
-			state = false;
 		
-		if(total == 0 && dur == 0)
-			state = false;
+		if(gui.isStartEndMode()) {
+			int start = gui.getATime(), end = gui.getBTime();
+			if(end < start)
+				state = false;
+			
+			if(start == 0 && end == 0)
+				state = false;
+		}else {
+			int total = gui.getATime(), dur = gui.getBTime();
+			if(total < dur)
+				state = false;
+			
+			if(total == 0 && dur == 0)
+				state = false;
+		}
+		
+		
 		
 		return state;
 	}

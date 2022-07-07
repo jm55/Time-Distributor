@@ -1,3 +1,7 @@
+/**
+ * @author Escalona, J.M.
+ */
+
 package gui;
 
 import javax.swing.*;
@@ -26,9 +30,9 @@ public class GUI extends JFrame{
 	private final String typeFace = "Arial";
 	private ActionListener listener;
 	private String[] columns = {"#", "Name", "Start", "End", "Duration (sec)"};
-	private JLabel titleLabel, hrLabel, minLabel, secLabel, totalTimeLabel, durationTimeLabel, colon0, inputColon, selectedFileLabel, recommendedCountLabel;
-	private JTextField hrTotal, minTotal, secTotal, hrDur, minDur, secDur, selectedFile, recommendedCount;
-	//private JCheckBox P2PCheckBox;
+	private JLabel titleLabel, hrLabel, minLabel, secLabel, ATimeLabel, BTimeLabel, colon0, inputColon, selectedFileLabel, recommendedCountLabel;
+	private JTextField hrA, minA, secA, hrB, minB, secB, selectedFile, recommendedCount;
+	private JCheckBox startend;
 	private JButton openFile, saveFile, compute, about, reset, recommendedDuration;
 	private JTable raw_table;
 	private JScrollPane table;
@@ -105,15 +109,17 @@ public class GUI extends JFrame{
 	 * Clears input and output components of the window
 	 */
 	public void clearIO() {
-		hrTotal.setText("00");
-		minTotal.setText("00");
-		secTotal.setText("00");
-		hrDur.setText("00");
-		minDur.setText("00");
-		secDur.setText("00");
+		hrA.setText("00");
+		minA.setText("00");
+		secA.setText("00");
+		hrB.setText("00");
+		minB.setText("00");
+		secB.setText("00");
 		tableModel.setRowCount(0);
 		selectedFile.setText("Path to selected names file.");
 		recommendedCount.setText("");
+		startend.setSelected(false);
+		swapMode(false);
 	}
 	
 	/**
@@ -134,60 +140,70 @@ public class GUI extends JFrame{
 		return isVisible();
 	}
 	
-	public int[] getTotalTimeStr() {
+	/**
+	 * Get the total time string of the time indicated by the user.
+	 * Equivalent to 'start' when in 'Start-End Mode'.
+	 * @return 
+	 */
+	public int[] getATimeStr() {
 		int[] times = {0,0,0};
 		try {
-			if(hrTotal.getText().length() != 0)
-				times[0] = Integer.parseInt(hrTotal.getText());
-			if(minTotal.getText().length() != 0)
-				times[1] = Integer.parseInt(minTotal.getText());
-			if(secTotal.getText().length() != 0)
-				times[2] = Integer.parseInt(secTotal.getText());
+			if(hrA.getText().length() != 0)
+				times[0] = Integer.parseInt(hrA.getText());
+			if(minA.getText().length() != 0)
+				times[1] = Integer.parseInt(minA.getText());
+			if(secA.getText().length() != 0)
+				times[2] = Integer.parseInt(secA.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return times;
 	}
 	
-	public int getTotalTime() {
+	/**
+	 * Get the duration time string of the time indicated by the user.
+	 * Equivalent to 'end' when in 'Start-End Mode'.
+	 * @return 
+	 */
+	public int getATime() {
 		int hr = 0, min = 0, sec = 0;
 		try {
-			if(hrTotal.getText().length() != 0)
-				hr = Integer.parseInt(hrTotal.getText());
-			if(minTotal.getText().length() != 0)
-				min = Integer.parseInt(minTotal.getText());
-			if(secTotal.getText().length() != 0)
-				sec = Integer.parseInt(secTotal.getText());
+			if(hrA.getText().length() != 0)
+				hr = Integer.parseInt(hrA.getText());
+			if(minA.getText().length() != 0)
+				min = Integer.parseInt(minA.getText());
+			if(secA.getText().length() != 0)
+				sec = Integer.parseInt(secA.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return new Compute().timeToSeconds(hr, min, sec);
 	}
 	
-	public int[] getDurTimeStr() {
+	public int[] getBTimeStr() {
 		int[] times = {0,0,0};
 		try {
-			if(hrDur.getText().length() != 0)
-				times[0] = Integer.parseInt(hrDur.getText());
-			if(minDur.getText().length() != 0)
-				times[1] = Integer.parseInt(minDur.getText());
-			if(secDur.getText().length() != 0)
-				times[2] = Integer.parseInt(secDur.getText());
+			if(hrB.getText().length() != 0)
+				times[0] = Integer.parseInt(hrB.getText());
+			if(minB.getText().length() != 0)
+				times[1] = Integer.parseInt(minB.getText());
+			if(secB.getText().length() != 0)
+				times[2] = Integer.parseInt(secB.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return times;
 	}
 	
-	public int getDurTime() {
+	public int getBTime() {
 		int hr = 0, min = 0, sec = 0;
 		try {
-			if(hrDur.getText().length() != 0)
-				hr = Integer.parseInt(hrDur.getText());
-			if(minDur.getText().length() != 0)
-				min = Integer.parseInt(minDur.getText());
-			if(secDur.getText().length() != 0)
-				sec = Integer.parseInt(secDur.getText());
+			if(hrB.getText().length() != 0)
+				hr = Integer.parseInt(hrB.getText());
+			if(minB.getText().length() != 0)
+				min = Integer.parseInt(minB.getText());
+			if(secB.getText().length() != 0)
+				sec = Integer.parseInt(secB.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -207,12 +223,27 @@ public class GUI extends JFrame{
 		tableModel.addRow(row);
 	}
 	
-	public void setRecommendedCount(int count) {
-		recommendedCount.setText(count + "");
+	public void setRecommendedCount(String count) {
+		recommendedCount.setText(count);
 	}
 	
 	public void resetTable() {
 		tableModel.setRowCount(0);
+	}
+	
+	public boolean isStartEndMode() {
+		return startend.isSelected();
+	}
+	
+	public void swapMode(boolean startend) {
+		if(startend) {
+			ATimeLabel.setText("Start Time: ");
+			BTimeLabel.setText("End Time: ");
+		}else {
+			ATimeLabel.setText("Total Time: ");
+			BTimeLabel.setText("Duration Time: ");
+		}
+		repaint();
 	}
 	
 	/***
@@ -241,10 +272,10 @@ public class GUI extends JFrame{
 		panel.add(colon0);
 		colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
 		panel.add(colon0);
-		totalTimeLabel = createLabel("Total Time: ", newFont(Font.BOLD, 16), WIDTH/2-400,104,400,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(totalTimeLabel);
-		durationTimeLabel = createLabel("Duration Time: ", newFont(Font.BOLD, 16), WIDTH/2-414,136,400,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(durationTimeLabel);
+		ATimeLabel = createLabel("Total Time: ", newFont(Font.BOLD, 16), 180,104,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
+		panel.add(ATimeLabel);
+		BTimeLabel = createLabel("Duration Time: ", newFont(Font.BOLD, 16), 180,136,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
+		panel.add(BTimeLabel);
 		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
 		panel.add(inputColon);
 		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
@@ -265,19 +296,19 @@ public class GUI extends JFrame{
 		
 		//INPUT/OUTPUT FIELDS/AREAS
 		//Total Time
-		hrTotal = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,100,88,24);
-		panel.add(hrTotal);
-		minTotal = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,100,88,24);
-		panel.add(minTotal);
-		secTotal = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,100,88,24);
-		panel.add(secTotal);
+		hrA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,100,88,24);
+		panel.add(hrA);
+		minA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,100,88,24);
+		panel.add(minA);
+		secA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,100,88,24);
+		panel.add(secA);
 		//Duration Time
-		hrDur = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,132,88,24);
-		panel.add(hrDur);
-		minDur = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,132,88,24);
-		panel.add(minDur);
-		secDur = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,132,88,24);
-		panel.add(secDur);
+		hrB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,132,88,24);
+		panel.add(hrB);
+		minB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,132,88,24);
+		panel.add(minB);
+		secB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,132,88,24);
+		panel.add(secB);
 		//Selected File
 		selectedFile = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-290,238,300,24);
 		selectedFile.setEditable(false);
@@ -299,6 +330,10 @@ public class GUI extends JFrame{
 		panel.add(reset);
 		recommendedDuration = createButton("Find Recommended Duration",newFont(Font.BOLD,14),WIDTH/2-(800/2),600,this.BTNWIDTH,this.BTNHEIGHT,listener,"RecDuration");
 		panel.add(recommendedDuration);
+		
+		//CHECKBOX
+		startend = createCheckBox("Start-End Mode", newFont(Font.BOLD,16), WIDTH/2+250, 130, 180, 24, false,listener,"StartEndMode");
+		panel.add(startend);
 		
 		tableModel = new DefaultTableModel(columns,0);
 		raw_table = createTable(newFont(Font.PLAIN, 12), WIDTH/2-(800/2),280,800,300, tableModel);
@@ -406,10 +441,12 @@ public class GUI extends JFrame{
 	 * @param selected Default initial select state of the checkbox
 	 * @return JCheckBox object configured using the given basic parameters.
 	 */
-	private JCheckBox createCheckBox(String text, Font f, int x, int y, int width, int height, boolean selected) {
+	private JCheckBox createCheckBox(String text, Font f, int x, int y, int width, int height, boolean selected, ActionListener listener, String actionCommand) {
 		JCheckBox cb = new JCheckBox(text,selected);
 		cb.setFont(f);
 		cb.setBounds(x,y,width,height);	
+		cb.addActionListener(listener);
+		cb.setActionCommand(actionCommand);
 		return cb;
 	}
 	

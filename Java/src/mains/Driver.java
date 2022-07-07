@@ -1,3 +1,8 @@
+/**
+ * @author Escalona, J.M.
+ */
+
+
 package mains;
 
 import java.util.Scanner;
