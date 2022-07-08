@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Rubik&display=swap');
+
+:root{
+    font-family: 'Rubik', sans-serif;
+
+    --button: white;
+    --button_hover: grey;
+
+    --textfield: white;
+    --textfield_select: grey;
+
+    --text: black;
+    --anchor: black;
+    --anchor_visited: grey;
+    --anchor_hover: grey;
+}
+
+::-webkit-file-upload-button{
+    font-family: 'Rubik', sans-serif;
+    width: 120px;
+    height: 30px;
+    border-radius: 4px;
+}
+
+::-webkit-file-upload-button:hover{
+    background-color: var(--button_hover);
+}
+
+body{
+    background-color: whitesmoke;
+}
+
+input{
+    border-radius: 4px;
+}
+
+input[type="text"]:focus{
+    background-color: var(--textfield_select);
+}
+
+header{
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    color: var(--anchor_visited);
+}
+
+button{
+    font-family: 'Rubik', sans-serif;
+    width: 120px;
+    height: 30px;
+    border-radius: 4px;
+}
+
+button:hover{
+    background-color: var(--button_hover);
+}
+
+.time{
+    font-size: 16px;
+    width: 60px;
+}
+
+#inputs{
+    display: inline-grid;
+    margin-left: auto;
+    margin-right: auto;
+    row-gap: 20px;
+}
+
+#aTime_span{
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#bTime_span{
+    padding-top: 2px;
+    padding-bottom: 2px;
+}

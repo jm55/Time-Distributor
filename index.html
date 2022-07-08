@@ -1,15 +1,56 @@
 <html>
     <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="public/js/script.js"></script>
+        <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+        <link rel="stylesheet" href="public/css/style.css">
         <title>Time Distributor</title>
     </head>
     <body>
-        <h1>Time Distrbutor</h1>
+        <header>
+            <h1><a href="https://jm55dlsu.github.io/TimeDistributor/">Time Distributor</a></h1>
+            <p>Downloadable version found <a href="https://github.com/jm55DLSU/TimeDistributor/releases/tag/v2.7.1">here</a>.</p>
+        </header>
         <hr>
-        <div>
-            <h2>Input: </h2>
+        <div style="display:grid;">
+            <div id="input_div">
+                <h2>Input: </h2>
+                <div id="inputs">
+                    <label id="aTime_label">Total Time (hh:mm:ss): </label>
+                    <span id="aTime_span">
+                        <input type="text" class="time" id="aTime_h">:
+                        <input type="text" class="time" id="aTime_m">:
+                        <input type="text" class="time" id="aTime_s">
+                    </span>
+                    <label id="bTime_label">Duration Time (hh:mm:ss): </label>
+                    <span id="bTime_span">
+                        <input type="text" class="time" id="bTime_h">:
+                        <input type="text" class="time" id="bTime_m">:
+                        <input type="text" class="time" id="bTime_s">
+                    </span>
+                    <span id="startendMode_span">
+                        <label>Start-End Mode: </label>
+                        <input type="checkbox" id="startendMode">
+                    </span>
+                    <span id="names_file">
+                        <label>Names File: </label>
+                        <input type="file" id="files" name="files" accept=".csv">
+                    </span>
+                    <span>
+                        <button id="compute">Compute</button>
+                        <button id="reset">Reset</button>
+                    </span>
+                </div>
+            </div>
+            <div style="display:grid;" id="output_div">
+                <h2>Output: </h2>
+                <br>
+            </div>
         </div>
-        <div>
-            <h2>Output: </h2>
+        <hr>
+        <div style="display: inline; text-align: right;">
+            <a href="https://github.com/jm55DLSU/TimeDistributor"><p>©2022 エスカローナミゲル</p></a>
+            <p>Powered by Github Pages</p>
         </div>
     </body>
 </html>
