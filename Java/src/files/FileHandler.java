@@ -30,8 +30,8 @@ public class FileHandler {
 				else
 					extension = "";
 				
-				if(!extension.equalsIgnoreCase(".csv"))
-					JOptionPane.showMessageDialog(null, "File selected not allowed, please select .csv files containing names only.");
+				if(!extension.equalsIgnoreCase(".txt"))
+					JOptionPane.showMessageDialog(null, "File selected not allowed, please select .txt files containing names only.");
 				else {
 					valid = true;
 					Scanner fscan;

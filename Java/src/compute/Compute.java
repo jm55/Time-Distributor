@@ -2,7 +2,6 @@
  * @author Escalona, J.M.
  */
 
-
 package compute;
 
 public class Compute {

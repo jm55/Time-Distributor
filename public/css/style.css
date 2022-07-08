@@ -4,46 +4,64 @@
     font-family: 'Rubik', sans-serif;
 
     --button: white;
-    --button_hover: grey;
+    --button_hover: #66BB6A;
+    --button_click: #388E3C;
 
     --textfield: white;
-    --textfield_select: grey;
+    --textfield_select: #4CAF50;
 
     --text: black;
     --anchor: black;
-    --anchor_visited: grey;
-    --anchor_hover: grey;
+    --anchor_visited: green;
+    --anchor_hover: yellowgreen;
+
+    --card: #A5D6A7;
+    
+    --card_border-radius: 10px;
+    --input_border-radius: 4px;
 }
 
 ::-webkit-file-upload-button{
     font-family: 'Rubik', sans-serif;
     width: 120px;
     height: 30px;
-    border-radius: 4px;
+    border-radius: var(--input_border-radius);
 }
 
 ::-webkit-file-upload-button:hover{
     background-color: var(--button_hover);
 }
 
+::-webkit-file-upload-button:active{
+    background-color: #43A047;
+}
+
 body{
-    background-color: whitesmoke;
+    background-color: #4CAF50;
 }
 
 input{
-    border-radius: 4px;
+    border-radius: var(--input_border-radius);
+    font-weight: 600;
 }
 
-input[type="text"]:focus{
+input[type="number"]{
+    height: 24px;
+}
+
+input[type="number"]:focus{
     background-color: var(--textfield_select);
+    color: whitesmoke;
 }
 
 header{
     text-align: center;
+    background-color: var(--card);
 }
 
 a{
     text-decoration: none;
+    font-weight: 600;
 }
 
 a:visited{
@@ -54,23 +72,51 @@ button{
     font-family: 'Rubik', sans-serif;
     width: 120px;
     height: 30px;
-    border-radius: 4px;
+    border-radius: var(--input_border-radius);
 }
 
 button:hover{
     background-color: var(--button_hover);
 }
 
+button:active{
+    background-color: #43A047;
+}
+
+header{
+    display:block;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: var(--card_border-radius);
+}
+
+footer{
+    text-align: right;
+    background-color: var(--card);
+    border-radius: var(--card_border-radius);
+    position: relative;
+    margin-bottom: 0px;
+}
+
+table{
+    color: black;
+    border: 4px;
+    border-color: black;
+    border-style: solid;
+    border-radius: var(--input_border-radius);
+    row-gap: 8px;
+    border-collapse: collapse;
+}
+
+th{
+    border: 0px 2px 0px none;
+    border-color: black;
+    border-style: solid;
+}
+
 .time{
     font-size: 16px;
     width: 60px;
-}
-
-#inputs{
-    display: inline-grid;
-    margin-left: auto;
-    margin-right: auto;
-    row-gap: 20px;
 }
 
 #aTime_span{
@@ -82,3 +128,23 @@ button:hover{
     padding-top: 2px;
     padding-bottom: 2px;
 }
+
+#input_div{
+    width: 25%;
+    float: left;
+    display: grid;
+    row-gap: 10px;
+    padding: 4px 0px 20px 20px;
+    background-color: var(--card);
+    border-radius: var(--card_border-radius);
+}
+
+#output_div{
+    width: 70%;
+    float: right;
+    display: grid;
+    padding: 4px 4px 20px 20px;
+    background-color: var(--card);
+    border-radius: var(--card_border-radius);
+}
+
