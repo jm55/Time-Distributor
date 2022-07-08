@@ -6,6 +6,7 @@ var list = {};
 $(document).ready(()=>{
     checkComputeConnection();
     checkGUIConnection();
+    console.log('validator accessible: ' + validator.isBoolean('true'));
     reader.onload = function (event) {
         var text = event.target.result;
         if(text.includes('\r'))
@@ -58,7 +59,30 @@ $(document).ready(()=>{
         alert("Function not ready, please wait for the next update.");
     });
     $('#recommended').click(function(){
-        alert("Function not ready, please wait for the next update.");
+        var total = null, n = null;
+        total = prompt("Enter total time (hh:mm:ss): ");
+        if(total == null)
+            return;
+        else{
+            if(total.length < 8){
+                alert("Time format not followed, please try again.");
+                return;
+            }
+            var h = total.substring(0,2),m = total.substring(3,5), s = total.substring(6,7);
+            if(!validator.isNumeric(h) && !validator.isNumeric(m) && !validator.isNumeric(s)){
+                alert("Invalid entry, please try again.");
+                return;
+            }
+            n = prompt("Enter number of persons: ");
+            if(!validator.isNumeric(n)){
+                alert("Invalid entry, please try again.");
+                return;
+            }
+            var totalSec = timeToSeconds(Number.parseInt(h),Number.parseInt(m),Number.parseInt(s));
+            // @ts-ignore
+            var split_time = count(Number.parseInt(n),totalSec);
+            alert("Recommended time for specified total time and number of persons:\n" + secondsToString(split_time));
+        }
     });
 });
 
