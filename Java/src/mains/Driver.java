@@ -1,3 +1,8 @@
+/**
+ * @author Escalona, J.M.
+ */
+
+
 package mains;
 
 import java.util.Scanner;
@@ -5,11 +10,29 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 import files.FileHandler;
+import gui.GUI;
 import compute.Compute;
 
 public class Driver {
 
+	private static GUI g;
+	private static Controller c;
+	
 	public static void main(String[] args) {
+		gui();
+		//tempGUI();
+	}
+
+	public static void gui() {
+		g = new GUI(true);
+		c = new Controller(g);
+		g.setDefaultDisplay();
+		g.setVisible(true);
+		g.clearIO();
+		g.setListener(c);
+	}
+	
+	public static void tempGUI() {
 		System.out.println("=========================");
 		System.out.println("=====TimeDistributor=====");
 		System.out.println("=========================");
@@ -19,14 +42,14 @@ public class Driver {
 		
 		FileHandler fh = new FileHandler();
 
-		String[] names = fh.readFile();
-		if(names == null) {
+		String[][] data = fh.readFile();
+		if(data  == null) {
 			JOptionPane.showMessageDialog(null, "No file selected, exiting program...");
 			System.exit(0);
 		}
-		System.out.println("Number of Students: " + names.length);
+		System.out.println("Number of Students: " + data[1].length);
 		System.out.println("Names: ");
-		for(String n: names)
+		for(String n: data[1])
 			System.out.println(n);	
 		
 		Compute c = new Compute();
@@ -57,16 +80,16 @@ public class Driver {
 		System.out.println("Duration: " + d[0] + ":" + d[1] + ":" + d[2]);
 		System.out.println("Count: " + distribute);
 		
-		if(distribute > names.length)
+		if(distribute > data[1].length)
 			JOptionPane.showMessageDialog(null, "Persons not enough for specified time distribution.");
 		
-		String[][] list = c.findDuration(names, d, t, duration);
+		String[][] list = c.findDuration(data[1], d, t, duration);
 		for(String[] l: list)
-			System.out.println(l[0] + ", " + l[1] + ", " + l[2]);
+			System.out.println(l[0] + ", " + l[1] + ", " + l[2] + ", " + l[3] + ", " + l[4]);
 		
 		fh.writeFile(list);
 		
+		scan.close();
 		System.exit(0);
 	}
-
 }
