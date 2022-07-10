@@ -1,8 +1,8 @@
 //console.log("script.js");
 //alert("This web app is not ready, go away.");
 var reader = new FileReader();
-var data = {};
-var list = {};
+var data = [];
+var list = [];
 $(document).ready(()=>{
     checkComputeConnection();
     checkGUIConnection();
@@ -56,7 +56,7 @@ $(document).ready(()=>{
     //Save
     $('#save').click(function(){
         //console.log("Save");
-        alert("Function not ready, please wait for the next update.");
+        saveData();
     });
     $('#recommended').click(function(){
         var total = null, n = null;
@@ -85,6 +85,18 @@ $(document).ready(()=>{
         }
     });
 });
+
+function saveData(){
+    if(data.length == 0){
+        alert('No data to save!');
+    }else{
+        //https://stackoverflow.com/a/14966131
+        var header = [["ID", "Name", "Start Time", "End Time", "Duration (sec)\n"]];
+        let csvContent = "data:text/csv;charset=utf-8," + header.map(e => e.join(",")).join("\n") + data.map(e => e.join(",")).join("\n");
+        var encodedUri = encodeURI(csvContent);
+        window.open(encodedUri);
+    }   
+}
 
 function getNames(){
     var file = readFile('files');
@@ -129,7 +141,7 @@ function compute(names){
         var duration = end-start;
         var durationEach = count(list.length,duration);
         var output = findDurationStartEnd(list, aTime, bTime, duration, durationEach);
-        output = redistribute(output);
+        data = redistribute(output);
         flushToTable(output);
         $("#recommendDuration").text("Recommended Duration: N/A");
     }else{ //Duration Mode
@@ -142,7 +154,7 @@ function compute(names){
         else
             alert("Number of people to specified duration is not optimal. Recommending a new duration");
         var output = findDuration(list, aTime, bTime, duration, Number.parseInt(recommended));
-        output = redistribute(output);
+        data = redistribute(output);
         flushToTable(output);
     }
 }
