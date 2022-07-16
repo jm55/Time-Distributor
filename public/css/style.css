@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Open+Sans&family=Source+Sans+Pro&display=swap');
 
 :root{
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 
     --button: white;
     --button_hover: #66BB6A;
@@ -127,32 +127,44 @@ th{
     width: 60px;
 }
 
+.files{
+    width: 90%;
+}
+
 #aTime_span{
     padding-top: 2px;
     padding-bottom: 2px;
+    width: 90%;
 }
 
 #bTime_span{
     padding-top: 2px;
     padding-bottom: 2px;
+    width: 90%;
 }
 
 #input_div{
-    width: 25%;
+    width: 24%;
     float: left;
+    background-color: var(--card);
+    border-radius: var(--card_border-radius);
+    height: max-content;
+}
+
+#inputs{
     display: grid;
     row-gap: 10px;
-    padding: 0px 0px 10px 20px;
+    margin: 10px 10px 10px 10px;
+}
+
+#output_div{
+    width: 75%;
+    float: right;
     background-color: var(--card);
     border-radius: var(--card_border-radius);
 }
 
-#output_div{
-    width: 69%;
-    float: right;
+#outputs{
     display: grid;
-    padding: 0px 10px 10px 10px;
-    background-color: var(--card);
-    border-radius: var(--card_border-radius);
-    margin-bottom: 20px;
+    margin: 10px 10px 10px 10px;
 }

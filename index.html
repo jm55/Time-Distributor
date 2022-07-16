@@ -17,50 +17,54 @@
     <br>
     <body>
         <div id="input_div">
-            <h2>Input: </h2>
-            <label id="aTime_label">Total Time (hh:mm:ss): </label>
-            <span id="aTime_span">
-                <input type="number" min="0" class="time" id="aTime_h" placeholder="hh">:
-                <input type="number" min="0" class="time" id="aTime_m" placeholder="mm">:
-                <input type="number" min="0" class="time" id="aTime_s" placeholder="ss">
-            </span>
-            <label id="bTime_label">Duration Time (hh:mm:ss): </label>
-            <span id="bTime_span">
-                <input type="number" min="0" class="time" id="bTime_h" placeholder="hh">:
-                <input type="number" min="0" class="time" id="bTime_m" placeholder="mm">:
-                <input type="number" min="0" class="time" id="bTime_s" placeholder="ss">
-            </span>
-            <span id="startendMode_span">
-                <label>Start-End Mode: </label>
-                <input type="checkbox" id="startendMode">
-            </span>
-            <span id="names_file">
-                <label>Names File (.txt; separated by new line): </label>
-                <input style="margin-top: 10px;" type="file" id="files" name="files" accept=".txt">
-            </span>
-            <span style="display: flexbox; margin-top: 10px;">
-                <button id="compute">Compute</button>
-                <button id="reset">Reset</button>
-                <button style="margin-top: 10px; width: inherit;" id="recommended">Recommended Duration</button>
-            </span>
+            <div id="inputs">
+                <h2>Input: </h2>
+                <label id="aTime_label">Total Time (hh:mm:ss): </label>
+                <span id="aTime_span">
+                    <input type="number" min="0" class="time" id="aTime_h" placeholder="hh">:
+                    <input type="number" min="0" class="time" id="aTime_m" placeholder="mm">:
+                    <input type="number" min="0" class="time" id="aTime_s" placeholder="ss">
+                </span>
+                <label id="bTime_label">Duration Time (hh:mm:ss): </label>
+                <span id="bTime_span">
+                    <input type="number" min="0" class="time" id="bTime_h" placeholder="hh">:
+                    <input type="number" min="0" class="time" id="bTime_m" placeholder="mm">:
+                    <input type="number" min="0" class="time" id="bTime_s" placeholder="ss">
+                </span>
+                <span id="startendMode_span">
+                    <label>Start-End Mode: </label>
+                    <input type="checkbox" id="startendMode">
+                </span>
+                <span id="names_file">
+                    <label>Names File (.txt; separated by new line): </label>
+                    <input style="margin-top: 10px;" type="file" id="files" name="files" accept=".txt">
+                </span>
+                <span style="display: flexbox;">
+                    <button id="compute">Compute</button>
+                    <button id="reset">Reset</button>
+                    <button style="margin-top: 10px; width: inherit;" id="recommended">Recommended Duration</button>
+                </span>
+            </div>
         </div>
         <div id="output_div">
-            <h2>Output: </h2>
-            <p id="nameCounter">Name(s) detected: 0</p>
-            <p id="recommendCounter">Recommended Count: 0</p>
-            <p id="recommendDuration">Recommended Duration: hh:mm:ss</p>
-            <h3>Output Table:</h3>
-            <table id="output_table">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Duration (sec)</th>
-                </tr>
-            </table>
-            <hr>
-            <button id="save">Save</button>
+            <div id="outputs">
+                <h2>Output: </h2>
+                <p id="nameCounter">Name(s) detected: 0</p>
+                <p id="recommendCounter">Recommended Count: 0</p>
+                <p id="recommendDuration">Recommended Duration: hh:mm:ss</p>
+                <h3>Output Table:</h3>
+                <table id="output_table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration (sec)</th>
+                    </tr>
+                </table>
+                <hr>
+                <button id="save">Save</button>
+            </div>
         </div>
     </body>
     <br>
