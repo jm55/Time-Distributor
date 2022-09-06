@@ -90,7 +90,7 @@ function saveData(){
     if(data.length == 0){
         alert('No data to save!');
     }else{
-        //https://stackoverflow.com/a/14966131
+        //Reference: https://stackoverflow.com/a/14966131
         var header = [["ID", "Name", "Start Time", "End Time", "Duration (sec)\n"]];
         let csvContent = "data:text/csv;charset=utf-8," + header.map(e => e.join(",")).join("\n") + data.map(e => e.join(",")).join("\n");
         var encodedUri = encodeURI(csvContent);
@@ -107,7 +107,7 @@ function getNames(){
         return false;
 }
 
-//https://love2dev.com/blog/javascript-remove-from-array/#:~:text=Using%20the%20Array%20filter%20Method%20to%20Remove%20Items%20By%20Value
+//Reference: https://love2dev.com/blog/javascript-remove-from-array/#:~:text=Using%20the%20Array%20filter%20Method%20to%20Remove%20Items%20By%20Value
 function cleanNames(){
     list = list.filter(function(value, index, arr){ 
         return value != '';

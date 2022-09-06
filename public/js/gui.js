@@ -2,6 +2,10 @@ function checkGUIConnection(){
     console.log('gui.js accessible!');
 }
 
+/**
+ * Gets A time (first time input)
+ * @returns Returns the list of time A values in [h,m,s]
+ */
 function getATime(){
     var list = [0,0,0];
     if($("#aTime_h").val() != "")
@@ -13,6 +17,10 @@ function getATime(){
     return list;
 }
 
+/**
+ * Gets B time (second time input)
+ * @returns Returns the list of time B values in [h,m,s]
+ */
 function getBTime(){
     var list = [0,0,0];
     if($("#bTime_h").val() != "")
