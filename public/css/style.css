@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Open+Sans&family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap');
 
 :root{
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Roboto', sans-serif;
 
     --button: white;
     --button_hover: #66BB6A;
@@ -63,6 +63,11 @@ header > p{
     font-size: 14px;
 }
 
+p{
+    margin-bottom: 2px;
+    padding: 0px;
+}
+
 a{
     text-decoration: none;
     font-weight: 600;
@@ -108,7 +113,7 @@ footer{
 
 table{
     color: black;
-    border: 4px;
+    border: 2px;
     border-color: black;
     border-style: solid;
     border-radius: var(--input_border-radius);
