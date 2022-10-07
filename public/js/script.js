@@ -4,9 +4,9 @@ var reader = new FileReader();
 var data = [];
 var list = [];
 $(document).ready(()=>{
-    checkComputeConnection();
-    checkGUIConnection();
-    console.log('validator accessible: ' + validator.isBoolean('true'));
+    //checkComputeConnection();
+    //checkGUIConnection();
+    //console.log('validator accessible: ' + validator.isBoolean('true'));
     reader.onload = function (event) {
         var text = event.target.result;
         if(text.includes('\r'))

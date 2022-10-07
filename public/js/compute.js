@@ -132,6 +132,7 @@ function splitTimeString(raw_duration){
  * @returns A redistributed time duration list of data
  */
 function redistribute(data){
+    console.log('redistributing...')
     var max = Number.parseInt(data[data.length-1][4]); //Get highest (always at the end of the list)
     var subsequent = Number.parseInt(data[data.length-2][4]); //Get subsequent value of highest
     /**
@@ -151,6 +152,7 @@ function redistribute(data){
      * The example therefore has an excess time of 50 (60-10) and a redistributable time of 50/(n-1).
      */
     var excess = max - subsequent; //Compute for excess
+    var redistributable = excess/(data.length-1);
     if(excess > 10){ //If excess is at 10 seconds, then redistribute
         var ctr = data.length-2;
         while(excess > 10){
