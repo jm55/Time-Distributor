@@ -1,6 +1,6 @@
 # TimeDistributor
 
-## [Web App](https://jm55dlsu.github.io/TimeDistributor/)
+## [Web App](https://jm55.github.io/TimeDistributor/)
 
 ## Description
 This project was a commission for purposes of human resource management. Specifically, the task was to simply distribute a certain task (transcribing in this case) across a number of people by dividing the number of people on a given individual allotted time over a total allotted time.
