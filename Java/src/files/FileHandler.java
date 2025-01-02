@@ -19,38 +19,35 @@ public class FileHandler {
 		String[][] arr = new String[2][];
 		ArrayList<String> raw_input = new ArrayList<String>();
 		JFileChooser jfc = new JFileChooser();
-		boolean valid = false;
-		while(!valid) {
-			if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				File f = jfc.getSelectedFile();
-				String extension = f.getName();
-				
-				if(extension.contains("."))
-					extension = extension.substring(extension.lastIndexOf('.'));
-				else
-					extension = "";
-				
-				if(!extension.equalsIgnoreCase(".txt"))
-					JOptionPane.showMessageDialog(null, "File selected not allowed, please select .txt files containing names only.");
-				else {
-					valid = true;
-					Scanner fscan;
-					try {
-						fscan = new Scanner(f);
-						while(fscan.hasNext())
-							raw_input.add(fscan.nextLine());
-						fscan.close();
-						arr[0] = new String[1];
-						arr[0][0] = f.getAbsolutePath();
-						arr[1] = new String[raw_input.size()];
-						arr[1] = raw_input.toArray(arr[1]);
-						return arr;
-					} catch (FileNotFoundException e) {
-						JOptionPane.showMessageDialog(null, "Error reading file...");
-					}
-				}
-			}else
-				return null;
+
+		if(jfc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+			return null;
+		}
+		
+		File f = jfc.getSelectedFile();
+		String extension = f.getName();
+		
+		if(extension.contains("."))
+			extension = extension.substring(extension.lastIndexOf('.'));
+		else
+			extension = "";
+		
+		if(!extension.equalsIgnoreCase(".txt")) {
+			JOptionPane.showMessageDialog(null, "File selected not allowed, please select .txt files containing names only.");
+		}else {
+			try {
+				Scanner fscan = new Scanner(f);
+				while(fscan.hasNext())
+					raw_input.add(fscan.nextLine());
+				fscan.close();
+				arr[0] = new String[1];
+				arr[0][0] = f.getAbsolutePath();
+				arr[1] = new String[raw_input.size()];
+				arr[1] = raw_input.toArray(arr[1]);
+				return arr;
+			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(null, "Error reading file...");
+			}
 		}
 		return null;
 	}
@@ -59,10 +56,7 @@ public class FileHandler {
 		JFileChooser jfc = new JFileChooser();
 		if(jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 			File f = jfc.getSelectedFile();
-			String filename = f.getName();
-			
 			f = new File(f.getAbsolutePath() + ".csv");
-			
 			System.out.println("Saving as: " + f.getAbsolutePath());
 			
 			try {
