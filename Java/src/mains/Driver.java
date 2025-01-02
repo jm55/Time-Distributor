@@ -20,7 +20,6 @@ public class Driver {
 	
 	public static void main(String[] args) {
 		gui();
-		//tempGUI();
 	}
 
 	public static void gui() {
@@ -32,6 +31,7 @@ public class Driver {
 		g.setListener(c);
 	}
 	
+	//@deprecated
 	public static void tempGUI() {
 		System.out.println("=========================");
 		System.out.println("=====TimeDistributor=====");
