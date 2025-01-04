@@ -1,5 +1,5 @@
 function checkComputeConnection(){
-    console.log('compute.js accessible!');
+    console.log('Compute');
 }
 
 /**
@@ -34,7 +34,6 @@ function count(each, total){
  */
 function findDuration(name, total, dur, duration, recommended=0){
     var out = [];
-    
     var max = timeToSeconds(total[0], total[1], total[2]);
 
     //name.length != recommended; then compute for proper duration
@@ -49,15 +48,10 @@ function findDuration(name, total, dur, duration, recommended=0){
         sub_out.push((i+1) + ""); //ID
         sub_out.push(name[i]); //Name
         sub_out.push(secondsToString(start)); //Start
-        
-        // if(i == name.length-1)
-        //     end = max;
-        
         sub_out.push(secondsToString(end)); //End
         sub_out.push((Math.floor(end-start)).toFixed(0)); //Duration
         start = end;
         end += duration;
-        
         out.push(sub_out);
     }
     return out;
@@ -77,20 +71,20 @@ function findDurationStartEnd(name, start, end, duration, durationEach){
     var startSec = timeToSeconds(start[0],start[1],start[2]);
     var endSec = timeToSeconds(end[0],end[1],end[2]);
 
-    var clamp0 = Number(startSec), clamp1 = Number(startSec + durationEach);
+    var startTime = Number(startSec), endTime = Number(startSec + durationEach);
     for(var i = 0; i < name.length; i++){
         var sub = [];
         sub.push((i+1) + ""); //ID
         sub.push(name[i]); //Name
-        sub.push(secondsToString(clamp0)); //Start
+        sub.push(secondsToString(startTime)); //Start
         if(i == name.length-1)
-            clamp1 = endSec;
-        sub.push(secondsToString(clamp1)); //End
-        sub.push((Math.floor(clamp1-clamp0)).toFixed(0)); //Duration
+            endTime = endSec;
+        sub.push(secondsToString(endTime)); //End
+        sub.push((Math.floor(endTime-startTime)).toFixed(0)); //Duration
         out.push(sub);
 
-        clamp0 = Number(clamp1);
-        clamp1 += Number(durationEach);
+        startTime = Number(endTime);
+        endTime += Number(durationEach);
     }
     return out;
 }
@@ -106,9 +100,9 @@ function secondsToString(in_seconds){
     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
     var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
+    if (hours   < 10) {hours   = "0" + hours;}
+    if (minutes < 10) {minutes = "0" + minutes;}
+    if (seconds < 10) {seconds = "0" + seconds;}
     return hours+':'+minutes+':'+seconds;
 }
 
@@ -132,7 +126,6 @@ function splitTimeString(raw_duration){
  * @returns A redistributed time duration list of data
  */
 function redistribute(data){
-    console.log('redistributing...')
     var max = Number.parseInt(data[data.length-1][4]); //Get highest (always at the end of the list)
     var subsequent = Number.parseInt(data[data.length-2][4]); //Get subsequent value of highest
     /**
@@ -153,20 +146,17 @@ function redistribute(data){
      */
     var excess = max - subsequent; //Compute for excess
     var redistributable = excess/(data.length-1);
-    if(excess > 10){ //If excess is at 10 seconds, then redistribute
-        var ctr = data.length-2;
-        while(excess > 10){
-            var n = 0;
-            if(excess >= 10)
-                n = Number.parseInt(data[ctr][4]) + 10;
-            else 
-                n = Number.parseInt(data[ctr][4] + excess);
-            data[ctr][4] = String(ctr);
-            excess -= 10;
-            ctr -= 1;
-            if(ctr < 0)
-                ctr = data.length-2;
-        }
+    if(excess <= 10){
+        return data;
+    }
+    var ctr = data.length-2;
+    while(excess > 10){
+        var n = (excess >= 10) ? Number.parseInt(data[ctr][4]) + 10 : Number.parseInt(data[ctr][4] + excess);
+        data[ctr][4] = String(ctr);
+        excess -= 10;
+        ctr -= 1;
+        if(ctr < 0)
+            ctr = data.length-2;
     }
     return data;
 }

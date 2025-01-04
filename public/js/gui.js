@@ -1,5 +1,5 @@
 function checkGUIConnection(){
-    console.log('gui.js accessible!');
+    console.log('GUI');
 }
 
 /**
