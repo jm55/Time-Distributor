@@ -1,8 +1,8 @@
-//console.log("script.js");
 //alert("This web app is not ready, go away.");
 var reader = new FileReader();
 var data = [];
 var list = [];
+
 $(document).ready(()=>{
     //checkComputeConnection();
     //checkGUIConnection();
@@ -147,12 +147,8 @@ function compute(names){
     }else{ //Duration Mode
         var total = timeToSeconds(aTime[0], aTime[1], aTime[2]);
         var duration = timeToSeconds(bTime[0], bTime[1], bTime[2]);
-        var recommended = (count(duration,total)-1).toFixed(0);
+        var recommended = (count(duration,total)).toFixed(0);
         $("#recommendCounter").text("Recommended Count: " + recommended);
-        if(recommended < list.length)
-            alert("Specified duration not optimal, recommending a new duration.");
-        else
-            alert("Number of people to specified duration is not optimal. Recommending a new duration");
         var output = findDuration(list, aTime, bTime, duration, Number.parseInt(recommended));
         data = redistribute(output);
         flushToTable(output);
