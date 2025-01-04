@@ -12,7 +12,7 @@ import files.FileHandler;
 import gui.GUI;
 import compute.Compute;
 
-public class Driver {
+public class TimeDistributor {
 
 	private static GUI g;
 	private static Controller c;
