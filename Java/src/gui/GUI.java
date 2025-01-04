@@ -30,8 +30,8 @@ public class GUI extends JFrame{
 	private final String typeFace = "Arial";
 	private ActionListener listener;
 	private String[] columns = {"#", "Name", "Start", "End", "Duration (sec)"};
-	private JLabel titleLabel, hrLabel, minLabel, secLabel, ATimeLabel, BTimeLabel, colon0, inputColon, selectedFileLabel, recommendedCountLabel;
-	private JTextField hrA, minA, secA, hrB, minB, secB, selectedFile, recommendedCount;
+	private JLabel titleLabel, hrLabel, minLabel, secLabel, ATimeLabel, BTimeLabel, colon0, inputColon, selectedFileLabel, recommendedTimeLabel;
+	private JTextField hrA, minA, secA, hrB, minB, secB, selectedFile, recommendedTime;
 	private JCheckBox startend;
 	private JButton openFile, saveFile, compute, about, reset, recommendedDuration;
 	private JTable raw_table;
@@ -55,7 +55,6 @@ public class GUI extends JFrame{
 		setTitle(WindowTitle);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(setVisible);
-		
 		testMode();
 	}
 	
@@ -117,9 +116,9 @@ public class GUI extends JFrame{
 		secB.setText("00");
 		tableModel.setRowCount(0);
 		selectedFile.setText("Path to selected names file.");
-		recommendedCount.setText("");
-		startend.setSelected(false);
-		swapMode(false);
+		recommendedTime.setText("");
+		startend.setSelected(true);
+		swapMode(startend.isSelected());
 	}
 	
 	/**
@@ -145,7 +144,7 @@ public class GUI extends JFrame{
 	 * Equivalent to 'start' when in 'Start-End Mode'.
 	 * @return 
 	 */
-	public int[] getATimeStr() {
+	public int[] getATimeArr() {
 		int[] times = {0,0,0};
 		try {
 			if(hrA.getText().length() != 0)
@@ -156,6 +155,8 @@ public class GUI extends JFrame{
 				times[2] = Integer.parseInt(secA.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
+			for(int i = 0; i < times.length; i++)
+				times[i] = 0;
 		}
 		return times;
 	}
@@ -180,7 +181,7 @@ public class GUI extends JFrame{
 		return new Compute().timeToSeconds(hr, min, sec);
 	}
 	
-	public int[] getBTimeStr() {
+	public int[] getBTimeArr() {
 		int[] times = {0,0,0};
 		try {
 			if(hrB.getText().length() != 0)
@@ -210,6 +211,12 @@ public class GUI extends JFrame{
 		return new Compute().timeToSeconds(hr, min, sec);
 	}
 	
+	public void setBTime(int[] timeUnits) {
+		hrB.setText(timeUnits[0] + "");
+		minB.setText(timeUnits[1] + "");
+		secB.setText(timeUnits[2] + "");
+	}
+	
 	public void setSelectedFile(String f) {
 		selectedFile.setText(f);
 	}
@@ -224,7 +231,7 @@ public class GUI extends JFrame{
 	}
 	
 	public void setRecommendedCount(String count) {
-		recommendedCount.setText(count);
+		recommendedTime.setText(count);
 	}
 	
 	public void resetTable() {
@@ -239,9 +246,15 @@ public class GUI extends JFrame{
 		if(startend) {
 			ATimeLabel.setText("Start Time: ");
 			BTimeLabel.setText("End Time: ");
+			this.hrB.setEditable(true);
+			this.minB.setEditable(true);
+			this.secB.setEditable(true);
 		}else {
 			ATimeLabel.setText("Total Time: ");
 			BTimeLabel.setText("Duration Time: ");
+			this.hrB.setEditable(false);
+			this.minB.setEditable(false);
+			this.secB.setEditable(false);
 		}
 		repaint();
 	}
@@ -272,9 +285,9 @@ public class GUI extends JFrame{
 		panel.add(colon0);
 		colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
 		panel.add(colon0);
-		ATimeLabel = createLabel("Total Time: ", newFont(Font.BOLD, 16), 180,104,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
+		ATimeLabel = createLabel("Start Time: ", newFont(Font.BOLD, 16), 180,104,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
 		panel.add(ATimeLabel);
-		BTimeLabel = createLabel("Duration Time: ", newFont(Font.BOLD, 16), 180,136,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
+		BTimeLabel = createLabel("End Time: ", newFont(Font.BOLD, 16), 180,136,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
 		panel.add(BTimeLabel);
 		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
 		panel.add(inputColon);
@@ -291,8 +304,8 @@ public class GUI extends JFrame{
 		//Selected File
 		selectedFileLabel = createLabel("Selected File: ", newFont(Font.BOLD, 16), WIDTH/2-550,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
 		panel.add(selectedFileLabel);
-		recommendedCountLabel = createLabel("Recommended Count: ", newFont(Font.BOLD, 16), WIDTH/2,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(recommendedCountLabel);
+		recommendedTimeLabel = createLabel("Recommended Time: ", newFont(Font.BOLD, 16), WIDTH/2,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(recommendedTimeLabel);
 		
 		//INPUT/OUTPUT FIELDS/AREAS
 		//Total Time
@@ -313,9 +326,9 @@ public class GUI extends JFrame{
 		selectedFile = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-290,238,300,24);
 		selectedFile.setEditable(false);
 		panel.add(selectedFile);
-		recommendedCount = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+290,238,110,24);
-		recommendedCount.setEditable(false);
-		panel.add(recommendedCount);
+		recommendedTime = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+290,238,110,24);
+		recommendedTime.setEditable(false);
+		panel.add(recommendedTime);
 		
 		//BUTTON
 		openFile = createButton("Open Names File", newFont(Font.BOLD,16),WIDTH/2-(800/2),172, this.BTNWIDTH, this.BTNHEIGHT, listener, "OpenFile");
@@ -333,12 +346,14 @@ public class GUI extends JFrame{
 		
 		//CHECKBOX
 		startend = createCheckBox("Start-End Mode", newFont(Font.BOLD,16), WIDTH/2+250, 130, 180, 24, false,listener,"StartEndMode");
+		startend.setSelected(true);
 		panel.add(startend);
 		
 		tableModel = new DefaultTableModel(columns,0);
 		raw_table = createTable(newFont(Font.PLAIN, 12), WIDTH/2-(800/2),280,800,300, tableModel);
 		raw_table.setModel(tableModel);
-		table = createScrollPane(raw_table); 
+		raw_table.getTableHeader().setReorderingAllowed(false);
+		table = createScrollPane(raw_table);
 		panel.add(table);
 		
 		add(panel);

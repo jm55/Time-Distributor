@@ -13,11 +13,13 @@ public class Compute {
 		return (hr*3600) + (min*60) + sec;
 	}
 	
-	public int count(int each, int total) {
+	public int findSplitCount(int each, int total) {
+		if(each == 0)
+			return total / 1;
 		return total/each;
 	}
 	
-	public String[][] findDuration(String[] name, int[] each, int[] total, int duration){
+	public String[][] findDuration(String[] name, int[] total, int duration){
 		String[][] out = new String[name.length][5];
 		int start = 0, end = duration;
 		for(int i = 0; i < name.length; i++) {
@@ -31,52 +33,34 @@ public class Compute {
 			start = end;
 			end += duration;
 		}
-		
 		return out;
 	}
 	
-	public String[][] findDurationStartEnd(String[] name, int[] start, int[] end, int duration, int durationEach){
+	public String[][] findDurationStartEnd(String[] name, int[] start, int[] end, int durationEach){
 		String[][] out = new String[name.length][];
-		
 		int startSec = timeToSeconds(start[0], start[1], start[2]);
 		int endSec = timeToSeconds(end[0],end[1],end[2]);
-		
-		int clamp0 = startSec, clamp1 = startSec+durationEach;
+		int startTime = startSec, endTime = startSec+durationEach;
 		for(int i = 0; i < name.length; i++) {
 			out[i] = new String[5];
-			out[i][0] = (i+1) + "";
-			out[i][1] = name[i];
-			out[i][2] = secondsToString(clamp0); //Start time
+			out[i][0] = (i+1) + ""; //ID
+			out[i][1] = name[i]; //Name
+			out[i][2] = secondsToString(startTime); //Start time
 			if(i == name.length-1)
-				clamp1 = endSec;
-			out[i][3] = secondsToString(clamp1); //End time
-			out[i][4] = (clamp1-clamp0) + "";
-			clamp0 = clamp1;
-			clamp1 += durationEach;
+				endTime = endSec;
+			out[i][3] = secondsToString(endTime); //End time
+			out[i][4] = (endTime-startTime) + ""; //Duration
+			startTime = endTime;
+			endTime += durationEach;
 		}
-		
 		return out;
 	}
 	
 	private String timeToString(int hr, int min, int sec) {
 		String out = "";
-		//HR
-		if(hr < 10)
-			out += "0" + hr;
-		else
-			out += hr + "";
-		out += ":";
-		//MIN
-		if(min < 10)
-			out += "0" + min;
-		else
-			out += min + "";
-		out += ":";
-		//SEC
-		if(sec < 10)
-			out += "0" + sec;
-		else
-			out += sec;
+		out = (hr < 10) ? out + "0" + hr + ":" : out + hr + ":";
+		out = (min < 10) ? out + "0" + min + ":" : out + min + ":";
+		out = (sec < 10) ? out + "0" + sec + "" : out + sec + "";
 		return out;
 	}
 	
@@ -89,32 +73,28 @@ public class Compute {
 		return timeToString(hr, min, sec);
 	}
 	
-	public int[] splitTimeString(String raw_duration) {
+	public int[] stringToTime(String durationString) {
 		int[] d = new int[3];
-		d[0] = Integer.parseInt(raw_duration.substring(0,2));
-		d[1] = Integer.parseInt(raw_duration.substring(3,5));
-		d[2] = Integer.parseInt(raw_duration.substring(6,8));
+		d[0] = Integer.parseInt(durationString.substring(0,2));
+		d[1] = Integer.parseInt(durationString.substring(3,5));
+		d[2] = Integer.parseInt(durationString.substring(6,8));
 		return d;
 	}
 	
 	public String[][] redistribute(String[][] input){
-		int max = Integer.parseInt(input[input.length-1][4]), subsequent = Integer.parseInt(input[input.length-2][4]);
+		int max = Integer.parseInt(input[input.length-1][4]); //Total Time
+		int subsequent = Integer.parseInt(input[input.length-2][4]); //Duration Time
 		int excess = max - subsequent;
-		if(excess > 10) {
-			int ctr = input.length-2;
-			while(excess > 0) {
-				
-				int n = 0;
-				if(excess >= 10)
-					n = Integer.parseInt(input[ctr][4]) + 10;
-				else
-					n = Integer.parseInt(input[ctr][4] + excess);
-				input[ctr][4] = n + "";
-				excess -= 10;
-				ctr--;
-				if(ctr < 0)
-					ctr = input.length-2;
-			}
+		if (excess <= 10)
+			return input;
+		int ctr = input.length-2;
+		while(excess > 0) {
+			int n = (excess >= 10) ? Integer.parseInt(input[ctr][4]) + 10 : Integer.parseInt(input[ctr][4] + excess);
+			input[ctr][4] = n + ""; // Duration
+			excess -= 10;
+			ctr--;
+			if(ctr < 0)
+				ctr = input.length-2;
 		}
 		return input;
 	}
