@@ -47,10 +47,6 @@ public class Controller implements ActionListener{
 		}
 		if(e.getActionCommand().equalsIgnoreCase("StartEndMode")){
 			gui.swapMode(gui.isStartEndMode());
-			if(gui.isStartEndMode())
-				gui.popDialog("Start-End Time Mode enabled.", "Start-End Mode", JOptionPane.INFORMATION_MESSAGE);
-			else
-				gui.popDialog("Start-End Time Mode disabled.", "Start-End Mode", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
