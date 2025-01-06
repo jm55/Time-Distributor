@@ -63,7 +63,7 @@ public class GUI extends JFrame{
 	 * @param c Controller object managing components the window.
 	 */
 	public void setListener(Controller c) {
-		listener = c;
+		this.listener = c;
 	}
 	
 	/**
@@ -108,17 +108,17 @@ public class GUI extends JFrame{
 	 * Clears input and output components of the window
 	 */
 	public void clearIO() {
-		hrA.setText("00");
-		minA.setText("00");
-		secA.setText("00");
-		hrB.setText("00");
-		minB.setText("00");
-		secB.setText("00");
-		tableModel.setRowCount(0);
-		selectedFile.setText("Path to selected names file.");
-		recommendedTime.setText("");
-		startend.setSelected(true);
-		swapMode(startend.isSelected());
+		this.hrA.setText("00");
+		this.minA.setText("00");
+		this.secA.setText("00");
+		this.hrB.setText("00");
+		this.minB.setText("00");
+		this.secB.setText("00");
+		this.tableModel.setRowCount(0);
+		this.selectedFile.setText("Path to selected names file.");
+		this.recommendedTime.setText("");
+		this.startend.setSelected(true);
+		swapMode(this.startend.isSelected());
 	}
 	
 	/**
@@ -147,12 +147,12 @@ public class GUI extends JFrame{
 	public int[] getATimeArr() {
 		int[] times = {0,0,0};
 		try {
-			if(hrA.getText().length() != 0)
-				times[0] = Integer.parseInt(hrA.getText());
-			if(minA.getText().length() != 0)
-				times[1] = Integer.parseInt(minA.getText());
-			if(secA.getText().length() != 0)
-				times[2] = Integer.parseInt(secA.getText());
+			if(this.hrA.getText().length() != 0)
+				times[0] = Integer.parseInt(this.hrA.getText());
+			if(this.minA.getText().length() != 0)
+				times[1] = Integer.parseInt(this.minA.getText());
+			if(this.secA.getText().length() != 0)
+				times[2] = Integer.parseInt(this.secA.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 			for(int i = 0; i < times.length; i++)
@@ -169,27 +169,27 @@ public class GUI extends JFrame{
 	public int getATime() {
 		int hr = 0, min = 0, sec = 0;
 		try {
-			if(hrA.getText().length() != 0)
-				hr = Integer.parseInt(hrA.getText());
-			if(minA.getText().length() != 0)
-				min = Integer.parseInt(minA.getText());
-			if(secA.getText().length() != 0)
-				sec = Integer.parseInt(secA.getText());
+			if(this.hrA.getText().length() != 0)
+				hr = Integer.parseInt(this.hrA.getText());
+			if(this.minA.getText().length() != 0)
+				min = Integer.parseInt(this.minA.getText());
+			if(this.secA.getText().length() != 0)
+				sec = Integer.parseInt(this.secA.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		return new Compute().timeToSeconds(hr, min, sec);
+		return new Compute().timeUnitToSeconds(hr, min, sec);
 	}
 	
 	public int[] getBTimeArr() {
 		int[] times = {0,0,0};
 		try {
-			if(hrB.getText().length() != 0)
-				times[0] = Integer.parseInt(hrB.getText());
-			if(minB.getText().length() != 0)
-				times[1] = Integer.parseInt(minB.getText());
-			if(secB.getText().length() != 0)
-				times[2] = Integer.parseInt(secB.getText());
+			if(this.hrB.getText().length() != 0)
+				times[0] = Integer.parseInt(this.hrB.getText());
+			if(this.minB.getText().length() != 0)
+				times[1] = Integer.parseInt(this.minB.getText());
+			if(this.secB.getText().length() != 0)
+				times[2] = Integer.parseInt(this.secB.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -199,26 +199,26 @@ public class GUI extends JFrame{
 	public int getBTime() {
 		int hr = 0, min = 0, sec = 0;
 		try {
-			if(hrB.getText().length() != 0)
-				hr = Integer.parseInt(hrB.getText());
-			if(minB.getText().length() != 0)
-				min = Integer.parseInt(minB.getText());
-			if(secB.getText().length() != 0)
-				sec = Integer.parseInt(secB.getText());
+			if(this.hrB.getText().length() != 0)
+				hr = Integer.parseInt(this.hrB.getText());
+			if(this.minB.getText().length() != 0)
+				min = Integer.parseInt(this.minB.getText());
+			if(this.secB.getText().length() != 0)
+				sec = Integer.parseInt(this.secB.getText());
 		}catch(NumberFormatException e) {
 			this.popDialog("Please enter numbers only on the time field.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		return new Compute().timeToSeconds(hr, min, sec);
+		return new Compute().timeUnitToSeconds(hr, min, sec);
 	}
 	
 	public void setBTime(int[] timeUnits) {
-		hrB.setText(timeUnits[0] + "");
-		minB.setText(timeUnits[1] + "");
-		secB.setText(timeUnits[2] + "");
+		this.hrB.setText(timeUnits[0] + "");
+		this.minB.setText(timeUnits[1] + "");
+		this.secB.setText(timeUnits[2] + "");
 	}
 	
 	public void setSelectedFile(String f) {
-		selectedFile.setText(f);
+		this.selectedFile.setText(f);
 	}
 	
 	public void addMultipleRows(String[][] row) {
@@ -227,31 +227,31 @@ public class GUI extends JFrame{
 	}
 	
 	public void addRow(Object[] row) {
-		tableModel.addRow(row);
+		this.tableModel.addRow(row);
 	}
 	
 	public void setRecommendedCount(String count) {
-		recommendedTime.setText(count);
+		this.recommendedTime.setText(count);
 	}
 	
 	public void resetTable() {
-		tableModel.setRowCount(0);
+		this.tableModel.setRowCount(0);
 	}
 	
 	public boolean isStartEndMode() {
 		return startend.isSelected();
 	}
-	
+		
 	public void swapMode(boolean startend) {
 		if(startend) {
-			ATimeLabel.setText("Start Time: ");
-			BTimeLabel.setText("End Time: ");
+			this.ATimeLabel.setText("Start Time: ");
+			this.BTimeLabel.setText("End Time: ");
 			this.hrB.setEditable(true);
 			this.minB.setEditable(true);
 			this.secB.setEditable(true);
 		}else {
-			ATimeLabel.setText("Total Time: ");
-			BTimeLabel.setText("Duration Time: ");
+			this.ATimeLabel.setText("Total Time: ");
+			this.BTimeLabel.setText("Duration Time: ");
 			this.hrB.setEditable(false);
 			this.minB.setEditable(false);
 			this.secB.setEditable(false);
@@ -266,95 +266,94 @@ public class GUI extends JFrame{
 	 */
 	
 	private void buildDisplayContents(){
-		String methodName = "buildDisplayContents()";
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		
 		//LABELS
 		//Title Label
-		titleLabel = createLabel(WindowTitle, newFont(Font.BOLD, 24), WIDTH/2-200,24,400,32, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(titleLabel);
+		this.titleLabel = createLabel(WindowTitle, newFont(Font.BOLD, 24), WIDTH/2-200,24,400,32, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.titleLabel);
 		//Total Time Label
-		hrLabel = createLabel("hh", newFont(Font.BOLD, 16), WIDTH/2-100,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(hrLabel);
-		minLabel = createLabel("mm", newFont(Font.BOLD, 16), WIDTH/2,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(minLabel);
-		secLabel = createLabel("ss", newFont(Font.BOLD, 16), WIDTH/2+100,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(secLabel);
-		colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(colon0);
-		colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(colon0);
-		ATimeLabel = createLabel("Start Time: ", newFont(Font.BOLD, 16), 180,104,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
-		panel.add(ATimeLabel);
-		BTimeLabel = createLabel("End Time: ", newFont(Font.BOLD, 16), 180,136,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
-		panel.add(BTimeLabel);
-		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(inputColon);
-		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(inputColon);
-		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(inputColon);
-		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(inputColon);
-		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(inputColon);
-		inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(inputColon);
+		this.hrLabel = createLabel("hh", newFont(Font.BOLD, 16), WIDTH/2-100,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.hrLabel);
+		this.minLabel = createLabel("mm", newFont(Font.BOLD, 16), WIDTH/2,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.minLabel);
+		this.secLabel = createLabel("ss", newFont(Font.BOLD, 16), WIDTH/2+100,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.secLabel);
+		this.colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.colon0);
+		this.colon0 = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,72,32,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.colon0);
+		this.ATimeLabel = createLabel("Start Time: ", newFont(Font.BOLD, 16), 180,104,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
+		panel.add(this.ATimeLabel);
+		this.BTimeLabel = createLabel("End Time: ", newFont(Font.BOLD, 16), 180,136,200,16, SwingConstants.RIGHT, SwingConstants.TOP);
+		panel.add(this.BTimeLabel);
+		this.inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.inputColon);
+		this.inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.inputColon);
+		this.inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,100,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.inputColon);
+		this.inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.inputColon);
+		this.inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2+50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.inputColon);
+		this.inputColon = createLabel(":", newFont(Font.BOLD, 16), WIDTH/2-50,132,32,16,  SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.inputColon);
 		//Selected File
-		selectedFileLabel = createLabel("Selected File: ", newFont(Font.BOLD, 16), WIDTH/2-550,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(selectedFileLabel);
-		recommendedTimeLabel = createLabel("Recommended Time: ", newFont(Font.BOLD, 16), WIDTH/2,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
-		panel.add(recommendedTimeLabel);
+		this.selectedFileLabel = createLabel("Selected File: ", newFont(Font.BOLD, 16), WIDTH/2-550,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.selectedFileLabel);
+		this.recommendedTimeLabel = createLabel("Recommended Time: ", newFont(Font.BOLD, 16), WIDTH/2,240,400,16, SwingConstants.CENTER, SwingConstants.TOP);
+		panel.add(this.recommendedTimeLabel);
 		
 		//INPUT/OUTPUT FIELDS/AREAS
 		//Total Time
-		hrA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,100,88,24);
-		panel.add(hrA);
-		minA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,100,88,24);
-		panel.add(minA);
-		secA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,100,88,24);
-		panel.add(secA);
+		this.hrA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,100,88,24);
+		panel.add(this.hrA);
+		this.minA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,100,88,24);
+		panel.add(this.minA);
+		this.secA = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,100,88,24);
+		panel.add(this.secA);
 		//Duration Time
-		hrB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,132,88,24);
-		panel.add(hrB);
-		minB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,132,88,24);
-		panel.add(minB);
-		secB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,132,88,24);
-		panel.add(secB);
+		this.hrB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-128,132,88,24);
+		panel.add(this.hrB);
+		this.minB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-28,132,88,24);
+		panel.add(this.minB);
+		this.secB = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+72,132,88,24);
+		panel.add(this.secB);
 		//Selected File
-		selectedFile = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-290,238,300,24);
-		selectedFile.setEditable(false);
-		panel.add(selectedFile);
-		recommendedTime = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+290,238,110,24);
-		recommendedTime.setEditable(false);
-		panel.add(recommendedTime);
+		this.selectedFile = createTextField(newFont(Font.PLAIN, 16),WIDTH/2-290,238,300,24);
+		this.selectedFile.setEditable(false);
+		panel.add(this.selectedFile);
+		this.recommendedTime = createTextField(newFont(Font.PLAIN, 16),WIDTH/2+290,238,110,24);
+		this.recommendedTime.setEditable(false);
+		panel.add(this.recommendedTime);
 		
 		//BUTTON
-		openFile = createButton("Open Names File", newFont(Font.BOLD,16),WIDTH/2-(800/2),172, this.BTNWIDTH, this.BTNHEIGHT, listener, "OpenFile");
-		panel.add(openFile);
-		compute = createButton("Compute", newFont(Font.BOLD,16),WIDTH/2-(this.BTNWIDTH/2),172, this.BTNWIDTH, this.BTNHEIGHT, listener, "Compute");
-		panel.add(compute);
-		saveFile = createButton("Save Output", newFont(Font.BOLD,16),WIDTH/2+(this.BTNWIDTH/2)+16,172, this.BTNWIDTH, this.BTNHEIGHT, listener, "SaveFile");
-		panel.add(saveFile);
-		about = createButton("About",newFont(Font.BOLD,16),WIDTH/2+(this.BTNWIDTH/2)+16,600,this.BTNWIDTH,this.BTNHEIGHT,listener,"About");
-		panel.add(about);
-		reset = createButton("Reset",newFont(Font.BOLD,16),WIDTH/2-(this.BTNWIDTH/2),600,this.BTNWIDTH,this.BTNHEIGHT,listener,"Reset");
-		panel.add(reset);
-		recommendedDuration = createButton("Find Recommended Duration",newFont(Font.BOLD,14),WIDTH/2-(800/2),600,this.BTNWIDTH,this.BTNHEIGHT,listener,"RecDuration");
-		panel.add(recommendedDuration);
+		this.openFile = createButton("Open Names File", newFont(Font.BOLD,16),WIDTH/2-(800/2),172, this.BTNWIDTH, this.BTNHEIGHT, listener, "OpenFile");
+		panel.add(this.openFile);
+		this.compute = createButton("Compute", newFont(Font.BOLD,16),WIDTH/2-(this.BTNWIDTH/2),172, this.BTNWIDTH, this.BTNHEIGHT, listener, "Compute");
+		panel.add(this.compute);
+		this.saveFile = createButton("Save Output", newFont(Font.BOLD,16),WIDTH/2+(this.BTNWIDTH/2)+16,172, this.BTNWIDTH, this.BTNHEIGHT, listener, "SaveFile");
+		panel.add(this.saveFile);
+		this.about = createButton("About",newFont(Font.BOLD,16),WIDTH/2+(this.BTNWIDTH/2)+16,600,this.BTNWIDTH,this.BTNHEIGHT,this.listener,"About");
+		panel.add(this.about);
+		this.reset = createButton("Reset",newFont(Font.BOLD,16),WIDTH/2-(this.BTNWIDTH/2),600,this.BTNWIDTH,this.BTNHEIGHT,this.listener,"Reset");
+		panel.add(this.reset);
+		this.recommendedDuration = createButton("Find Recommended Duration",newFont(Font.BOLD,14),WIDTH/2-(800/2),600,this.BTNWIDTH,this.BTNHEIGHT,this.listener,"RecDuration");
+		panel.add(this.recommendedDuration);
 		
 		//CHECKBOX
-		startend = createCheckBox("Start-End Mode", newFont(Font.BOLD,16), WIDTH/2+250, 130, 180, 24, false,listener,"StartEndMode");
-		startend.setSelected(true);
-		panel.add(startend);
+		this.startend = createCheckBox("Start-End Mode", newFont(Font.BOLD,16), WIDTH/2+250, 130, 180, 24, false,this.listener,"StartEndMode");
+		this.startend.setSelected(true);
+		panel.add(this.startend);
 		
-		tableModel = new DefaultTableModel(columns,0);
-		raw_table = createTable(newFont(Font.PLAIN, 12), WIDTH/2-(800/2),280,800,300, tableModel);
-		raw_table.setModel(tableModel);
-		raw_table.getTableHeader().setReorderingAllowed(false);
-		table = createScrollPane(raw_table);
-		panel.add(table);
+		this.tableModel = new DefaultTableModel(columns,0);
+		this.raw_table = createTable(newFont(Font.PLAIN, 12), WIDTH/2-(800/2),280,800,300, this.tableModel);
+		this.raw_table.setModel(this.tableModel);
+		this.raw_table.getTableHeader().setReorderingAllowed(false);
+		this.table = createScrollPane(this.raw_table);
+		panel.add(this.table);
 		
 		add(panel);
 		revalidate();

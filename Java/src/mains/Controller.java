@@ -56,7 +56,7 @@ public class Controller implements ActionListener{
 			String persons = gui.inputDialog("Enter number of persons to divide the time from: ");
 			if (total_time == null || persons == null)
 				return;
-			int total_sec = c.timeToSeconds(c.stringToTime(total_time));
+			int total_sec = c.timeUnitToSeconds(c.stringToTimeUnit(total_time));
 			String split_time = c.secondsToString(c.findSplitCount(Integer.parseInt(persons), total_sec));
 			gui.popDialog("Recommended time for each (hh:mm:ss): " + split_time, "Recommended Duration Time", JOptionPane.PLAIN_MESSAGE);
 		}catch(NumberFormatException nf) {
@@ -98,20 +98,20 @@ public class Controller implements ActionListener{
 		}
 		if(gui.isStartEndMode()) {
 			int[] start = gui.getATimeArr(), end = gui.getBTimeArr();
-			int duration = c.timeToSeconds(end[0], end[1], end[2]) - c.timeToSeconds(start[0], start[1], start[2]);
+			int duration = c.timeUnitToSeconds(end[0], end[1], end[2]) - c.timeUnitToSeconds(start[0], start[1], start[2]);
 			int durationEach = c.findSplitCount(data[1].length, duration);
 			output = c.findDurationStartEnd(data[1], start, end, durationEach);
-			output = c.redistribute(output);
+			output = c.distributeTime(output);
 			gui.setRecommendedCount("N/A");
 			gui.resetTable();
 			gui.addMultipleRows(output);
 			gui.popDialog("Time duration between end and start time (hh:mm:ss): " + c.secondsToString(duration), "Time Duration between Start-End", JOptionPane.INFORMATION_MESSAGE);
 		}else {
 			int[] total = gui.getATimeArr();
-			int dur = c.findSplitCount(data[1].length, c.timeToSeconds(total));
-			gui.setBTime(c.stringToTime(c.secondsToString(dur)));
+			int dur = c.findSplitCount(data[1].length, c.timeUnitToSeconds(total));
+			gui.setBTime(c.stringToTimeUnit(c.secondsToString(dur)));
 			output = c.findDuration(data[1], total, dur);
-			output = c.redistribute(output);
+			output = c.distributeTime(output);
 			gui.setRecommendedCount(dur + " sec(s)");
 			gui.resetTable();
 			gui.addMultipleRows(output);
